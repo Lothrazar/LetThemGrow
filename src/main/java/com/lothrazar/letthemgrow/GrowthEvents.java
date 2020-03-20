@@ -43,7 +43,8 @@ public class GrowthEvents {
 
   @SubscribeEvent
   public void onServerStarting(EntityInteract event) {
-    if (event.getTarget() instanceof AgeableEntity) {
+    if (AnimalGrowthMod.config.disableFeeding()
+        && event.getTarget() instanceof AgeableEntity) {
       AgeableEntity growing = (AgeableEntity) event.getTarget();
       if (growing.isChild()) {
         if (growing instanceof AnimalEntity) {
