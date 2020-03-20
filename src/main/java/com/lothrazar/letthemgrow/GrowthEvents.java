@@ -5,6 +5,9 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class GrowthEvents {
@@ -19,8 +22,7 @@ public class GrowthEvents {
       int FULLGROWN = 0;
       if (child.getGrowingAge() < FULLGROWN) {
         //it has a 50% chance of not growing
-        if (world.rand.nextDouble() * 100 < AnimalGrowthMod.config.chanceBlock()) {
-          AnimalGrowthMod.LOGGER.info("slow down");
+        if (world.rand.nextDouble() * 100 < GrowthMod.config.getAnimalChance()) {
           child.setGrowingAge(child.getGrowingAge() - 1);
         }
       }
@@ -41,9 +43,28 @@ public class GrowthEvents {
     }
   }
 
+  /**
+   * Fired when any "growing age" blocks (for example cacti, chorus plants, or crops in vanilla) attempt to advance to the next growth age state during a random tick.<br>
+   * <br>
+   * {@link Result#DEFAULT} will pass on to the vanilla growth mechanics.<br>
+   * {@link Result#ALLOW} will force the plant to advance a growth stage.<br>
+   * {@link Result#DENY} will prevent the plant from advancing a growth stage.<br>
+   * <br>
+   * This event is not {@link Cancelable}.<br>
+   * <br>
+   */
+  @SubscribeEvent
+  public void onCropGrow(BlockEvent.CropGrowEvent.Pre event) {
+    if (event.getWorld().getRandom().nextDouble() * 100 < GrowthMod.config.getCropsChance()) {
+      //      AnimalGrowthMod.LOGGER.info(event.getResult() +
+      //          "" + event.getState() + " cancel" + event.getPos());
+      event.setResult(Result.DENY);
+    }
+  }
+
   @SubscribeEvent
   public void onServerStarting(EntityInteract event) {
-    if (AnimalGrowthMod.config.disableFeeding()
+    if (GrowthMod.config.disableFeeding()
         && event.getTarget() instanceof AgeableEntity) {
       AgeableEntity growing = (AgeableEntity) event.getTarget();
       if (growing.isChild()) {
@@ -53,7 +74,7 @@ public class GrowthEvents {
           //
           AnimalEntity child = (AnimalEntity) growing;
           if (child.isBreedingItem(event.getItemStack())) {
-            AnimalGrowthMod.LOGGER.info("dont feed eh");
+            GrowthMod.LOGGER.info("dont feed eh");
             event.setCanceled(true);
           }
         }
