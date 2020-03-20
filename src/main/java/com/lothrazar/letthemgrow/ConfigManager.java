@@ -13,17 +13,28 @@ public class ConfigManager {
   private static ForgeConfigSpec COMMON_CONFIG;
   private static IntValue ANIMALCHANCE;
   private static BooleanValue DISABLEFEEDING;
+  private static BooleanValue MILKNERF;
   private static IntValue CROPSCHANCE;
+  private static IntValue SAPLINGCHANCE;
   static {
     initConfig();
   }
 
   private static void initConfig() {
+    //    ForgeEventFactory.enti
+    //   Items.MILK_BUCKET;
+    //for cow milking hit htis up
+    //   ActionResultType cancelResult = net.minecraftforge.common.ForgeHooks.onInteractEntity(this, entityToInteractOn, hand);
+    //   if (cancelResult != null) return cancelResult;
     COMMON_BUILDER.comment("General settings").push(GrowthMod.MODID);
+    MILKNERF = COMMON_BUILDER.comment("When a cow is milked too often it becomes un-milkable for a time")
+        .define("limitedMilk", true);
+    SAPLINGCHANCE = COMMON_BUILDER.comment("Once every tick, this is the percentage chance that growth will be blocked; so 99 is very slow, and 1 is fast.")
+        .defineInRange("saplingSlowdownChance", 75, 0, 100);
     CROPSCHANCE = COMMON_BUILDER.comment("Once every tick, this is the percentage chance that growth will be blocked; so 99 is very slow, and 1 is fast.")
-        .defineInRange("cropsSlowdownChance", 75, 1, 99);
+        .defineInRange("cropsSlowdownChance", 50, 0, 100);
     ANIMALCHANCE = COMMON_BUILDER.comment("Once every tick, this is the percentage chance that growth will be blocked; so 99 is very slow, and 1 is fast.")
-        .defineInRange("livestockSlowdownChance", 75, 1, 99);
+        .defineInRange("livestockSlowdownChance", 70, 0, 100);
     DISABLEFEEDING = COMMON_BUILDER.comment("True to disable feeding any compatible items to child animals").define("blockFeedingYoung", true);
     COMMON_BUILDER.pop();
     COMMON_CONFIG = COMMON_BUILDER.build();
@@ -47,7 +58,15 @@ public class ConfigManager {
     return ANIMALCHANCE.get();
   }
 
+  public int getSaplingChance() {
+    return SAPLINGCHANCE.get();
+  }
+
   public boolean disableFeeding() {
     return DISABLEFEEDING.get();
+  }
+
+  public boolean milkNerf() {
+    return MILKNERF.get();
   }
 }
