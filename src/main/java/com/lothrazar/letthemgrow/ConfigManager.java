@@ -21,11 +21,6 @@ public class ConfigManager {
   }
 
   private static void initConfig() {
-    //    ForgeEventFactory.enti
-    //   Items.MILK_BUCKET;
-    //for cow milking hit htis up
-    //   ActionResultType cancelResult = net.minecraftforge.common.ForgeHooks.onInteractEntity(this, entityToInteractOn, hand);
-    //   if (cancelResult != null) return cancelResult;
     COMMON_BUILDER.comment("General settings").push(GrowthMod.MODID);
     MILKNERF = COMMON_BUILDER.comment("When a cow is milked too often it becomes un-milkable for a time")
         .define("limitedMilk", true);

@@ -25,7 +25,6 @@ public class GrowthEvents {
     if (!world.isRemote
         && event.getEntityLiving() instanceof AnimalEntity) {
       AnimalEntity child = (AnimalEntity) event.getEntityLiving();
-      // int NEWBABY = -24000;
       int FULLGROWN = 0;
       if (child.getGrowingAge() < FULLGROWN) {
         //it has a 50% chance of not growing
@@ -37,16 +36,6 @@ public class GrowthEvents {
        * The age value may be negative or positive or zero. If it's negative, it get's incremented on each tick, if it's positive, it get's decremented each tick. Don't confuse this with
        * EntityLiving.getAge. With a negative value the Entity is considered a child.
        */
-      //ageable entity LivingTick does this
-      //      if (this.isAlive()) {
-      //        int i = this.getGrowingAge();
-      //        if (i < 0) {
-      //           ++i;
-      //           this.setGrowingAge(i);
-      //        } else if (i > 0) {
-      //           --i;
-      //           this.setGrowingAge(i);
-      //        } }
     }
   }
 
@@ -115,8 +104,6 @@ public class GrowthEvents {
       if (growing.isChild()) {
         if (growing instanceof AnimalEntity) {
           //one subclass down from ageable
-          //
-          //
           AnimalEntity child = (AnimalEntity) growing;
           if (child.isBreedingItem(event.getItemStack())) {
             GrowthMod.LOGGER.info("dont feed eh");
