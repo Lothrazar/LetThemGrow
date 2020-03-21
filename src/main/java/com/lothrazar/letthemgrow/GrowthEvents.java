@@ -106,7 +106,6 @@ public class GrowthEvents {
           //one subclass down from ageable
           AnimalEntity child = (AnimalEntity) growing;
           if (child.isBreedingItem(event.getItemStack())) {
-            GrowthMod.LOGGER.info("dont feed eh");
             event.setCanceled(true);
           }
         }
