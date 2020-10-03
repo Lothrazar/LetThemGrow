@@ -23,14 +23,14 @@ updateJSONURL="https://raw.githubusercontent.com/Lothrazar/LetThemGrow/trunk/1.1
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://www.curseforge.com/minecraft/mc-mods/let-them-grow" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="letthemgrow.png" #optional
+logoFile="logoFile.png" #optional
 # A text field displayed in the mod UI
-credits="Thanks for this example mod goes to Java" #optional
+credits="" #optional
 # A text field displayed in the mod UI
 authors="Lothrazar" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A small mod by to slow down growth of crops and livestock
+Slows down growth of crops and livestock; see config file
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.letthemgrow]] #optional
