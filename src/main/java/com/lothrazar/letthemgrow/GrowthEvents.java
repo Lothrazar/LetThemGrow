@@ -18,6 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class GrowthEvents {
 
   private static final String MILKED_NBTKEY = GrowthMod.MODID + ":milked";
+  static final int FULLGROWN = 0;
 
   @SubscribeEvent
   public void onLivingUpdateEvent(LivingUpdateEvent event) {
@@ -25,10 +26,9 @@ public class GrowthEvents {
     if (!world.isClientSide
         && event.getEntityLiving() instanceof Animal) {
       Animal child = (Animal) event.getEntityLiving();
-      int FULLGROWN = 0;
       if (child.getAge() < FULLGROWN) {
         //it has a 50% chance of not growing
-        if (world.random.nextDouble() * 100 < GrowthMod.config.getAnimalChance()) {
+        if (world.random.nextDouble() * 100 < GrowthMod.CONFIG.getAnimalChance()) {
           child.setAge(child.getAge() - 1);
         }
       }
@@ -44,7 +44,7 @@ public class GrowthEvents {
     //milking timer
     Player player = event.getPlayer();
 
-    if (GrowthMod.config.milkNerf()
+    if (GrowthMod.CONFIG.milkNerf()
         && !player.level.isClientSide
         && !player.isCreative()
         && event.getTarget() instanceof Cow
@@ -81,26 +81,21 @@ public class GrowthEvents {
    */
   @SubscribeEvent
   public void onCropGrow(BlockEvent.CropGrowEvent.Pre event) {
-    if (event.getWorld().getRandom().nextDouble() * 100 <= GrowthMod.config.getCropsChance()) {
-      //      GrowthMod.LOGGER.info(event.getResult() +
-      //          "" + event.getState() + " cancel" + event.getPos());
+    if (event.getWorld().getRandom().nextDouble() * 100 <= GrowthMod.CONFIG.getCropsChance()) {
       event.setResult(Result.DENY);
     }
   }
 
   @SubscribeEvent
   public void onSaplingGrowTreeEvent(SaplingGrowTreeEvent event) {
-    if (event.getWorld().getRandom().nextDouble() * 100 <= GrowthMod.config.getSaplingChance()) {
-      //      GrowthMod.LOGGER.info(event.getResult() +
-      //          " sapling cancel " + event.getPos());
+    if (event.getWorld().getRandom().nextDouble() * 100 <= GrowthMod.CONFIG.getSaplingChance()) {
       event.setResult(Result.DENY);
     }
   }
 
   @SubscribeEvent
-  public void onServerStarting(EntityInteract event) {
-    if (GrowthMod.config.disableFeeding()
-        && event.getTarget() instanceof AgeableMob) {
+  public void onEntityInteract(EntityInteract event) {
+    if (GrowthMod.CONFIG.disableFeeding() && event.getTarget() instanceof AgeableMob) {
       AgeableMob growing = (AgeableMob) event.getTarget();
       if (growing.isBaby()) {
         if (growing instanceof Animal) {
