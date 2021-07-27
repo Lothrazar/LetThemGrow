@@ -1,11 +1,11 @@
 package com.lothrazar.letthemgrow;
 
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
@@ -21,15 +21,15 @@ public class GrowthEvents {
 
   @SubscribeEvent
   public void onLivingUpdateEvent(LivingUpdateEvent event) {
-    World world = event.getEntity().world;
-    if (!world.isRemote
-        && event.getEntityLiving() instanceof AnimalEntity) {
-      AnimalEntity child = (AnimalEntity) event.getEntityLiving();
+    Level world = event.getEntity().level;
+    if (!world.isClientSide
+        && event.getEntityLiving() instanceof Animal) {
+      Animal child = (Animal) event.getEntityLiving();
       int FULLGROWN = 0;
-      if (child.getGrowingAge() < FULLGROWN) {
+      if (child.getAge() < FULLGROWN) {
         //it has a 50% chance of not growing
-        if (world.rand.nextDouble() * 100 < GrowthMod.config.getAnimalChance()) {
-          child.setGrowingAge(child.getGrowingAge() - 1);
+        if (world.random.nextDouble() * 100 < GrowthMod.config.getAnimalChance()) {
+          child.setAge(child.getAge() - 1);
         }
       }
       /**
@@ -42,23 +42,24 @@ public class GrowthEvents {
   @SubscribeEvent
   public void onEntity(PlayerInteractEvent.EntityInteract event) {
     //milking timer
-    PlayerEntity player = event.getPlayer();
+    Player player = event.getPlayer();
+
     if (GrowthMod.config.milkNerf()
-        && !player.world.isRemote
-        && !player.abilities.isCreativeMode
-        && event.getTarget() instanceof CowEntity
+        && !player.level.isClientSide
+        && !player.isCreative()
+        && event.getTarget() instanceof Cow
         && event.getItemStack().getItem() == Items.BUCKET) {
-      CowEntity cow = (CowEntity) event.getTarget();
-      if (!cow.isChild()) {
+      Cow cow = (Cow) event.getTarget();
+      if (!cow.isBaby()) {
         //chance of turning back into child 
         //is crazy and makes no sense but makes it un-milkeable
         //non random is better,can we keep track of minimum 
         //even if nbt gets wiped
         int prev = cow.getPersistentData().getInt(MILKED_NBTKEY);
         if (prev >= 6
-            && player.world.rand.nextDouble() < 0.25) {
+            && player.level.random.nextDouble() < 0.25) {
           //after a few freebies, then there is a chance the bad thing happens
-          cow.setGrowingAge(-24000);
+          cow.setAge(-24000);
           cow.getPersistentData().putInt(MILKED_NBTKEY, 0);
           cow.getPersistentData().remove(MILKED_NBTKEY);
         }
@@ -99,13 +100,13 @@ public class GrowthEvents {
   @SubscribeEvent
   public void onServerStarting(EntityInteract event) {
     if (GrowthMod.config.disableFeeding()
-        && event.getTarget() instanceof AgeableEntity) {
-      AgeableEntity growing = (AgeableEntity) event.getTarget();
-      if (growing.isChild()) {
-        if (growing instanceof AnimalEntity) {
+        && event.getTarget() instanceof AgeableMob) {
+      AgeableMob growing = (AgeableMob) event.getTarget();
+      if (growing.isBaby()) {
+        if (growing instanceof Animal) {
           //one subclass down from ageable
-          AnimalEntity child = (AnimalEntity) growing;
-          if (child.isBreedingItem(event.getItemStack())) {
+          Animal child = (Animal) growing;
+          if (child.isFood(event.getItemStack())) {
             event.setCanceled(true);
           }
         }

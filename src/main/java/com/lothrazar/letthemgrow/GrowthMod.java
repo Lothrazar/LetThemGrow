@@ -8,7 +8,6 @@ import net.minecraftforge.fml.loading.FMLPaths;
 public class GrowthMod {
 
   public static final String MODID = "letthemgrow";
-  //  public static final Logger LOGGER = LogManager.getLogger();
   public static ConfigManager config;
 
   public GrowthMod() {
