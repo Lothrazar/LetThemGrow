@@ -6,11 +6,11 @@ import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.SaplingGrowTreeEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.SaplingGrowTreeEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,11 +21,11 @@ public class GrowthEvents {
   static final int FULLGROWN = 0;
 
   @SubscribeEvent
-  public void onLivingUpdateEvent(LivingUpdateEvent event) {
+  public void onLivingUpdateEvent(LivingTickEvent event) {
     Level world = event.getEntity().level;
     if (!world.isClientSide
-        && event.getEntityLiving() instanceof Animal) {
-      Animal child = (Animal) event.getEntityLiving();
+        && event.getEntity() instanceof Animal child) {
+      //      Animal child = (Animal) event.getEntityLiving();
       if (child.getAge() < FULLGROWN) {
         //it has a 50% chance of not growing
         if (world.random.nextDouble() * 100 < GrowthMod.CONFIG.getAnimalChance()) {
@@ -42,8 +42,7 @@ public class GrowthEvents {
   @SubscribeEvent
   public void onEntity(PlayerInteractEvent.EntityInteract event) {
     //milking timer
-    Player player = event.getPlayer();
-
+    Player player = event.getEntity();
     if (GrowthMod.CONFIG.milkNerf()
         && !player.level.isClientSide
         && !player.isCreative()
@@ -81,14 +80,14 @@ public class GrowthEvents {
    */
   @SubscribeEvent
   public void onCropGrow(BlockEvent.CropGrowEvent.Pre event) {
-    if (event.getWorld().getRandom().nextDouble() * 100 <= GrowthMod.CONFIG.getCropsChance()) {
+    if (event.getLevel().getRandom().nextDouble() * 100 <= GrowthMod.CONFIG.getCropsChance()) {
       event.setResult(Result.DENY);
     }
   }
 
   @SubscribeEvent
   public void onSaplingGrowTreeEvent(SaplingGrowTreeEvent event) {
-    if (event.getWorld().getRandom().nextDouble() * 100 <= GrowthMod.CONFIG.getSaplingChance()) {
+    if (event.getLevel().getRandom().nextDouble() * 100 <= GrowthMod.CONFIG.getSaplingChance()) {
       event.setResult(Result.DENY);
     }
   }
