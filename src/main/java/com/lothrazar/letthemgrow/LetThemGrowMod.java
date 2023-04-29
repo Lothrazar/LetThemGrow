@@ -5,14 +5,13 @@ import org.apache.logging.log4j.Logger;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod(GrowthMod.MODID)
-public class GrowthMod {
+@Mod(LetThemGrowMod.MODID)
+public class LetThemGrowMod {
 
   public static final String MODID = "letthemgrow";
   public static final Logger LOGGER = LogManager.getLogger();
-  public static ConfigManagerMobgrowth CONFIG;
 
-  public GrowthMod() {
+  public LetThemGrowMod() {
     new ConfigManagerMobgrowth();
     MinecraftForge.EVENT_BUS.register(new GrowthEvents());
   }

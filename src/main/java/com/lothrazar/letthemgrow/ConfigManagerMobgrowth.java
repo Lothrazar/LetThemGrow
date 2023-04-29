@@ -15,7 +15,7 @@ public class ConfigManagerMobgrowth extends ConfigTemplate {
   private static IntValue SAPLINGCHANCE;
   static {
     final ForgeConfigSpec.Builder BUILDER = builder();
-    BUILDER.comment("General settings").push(GrowthMod.MODID);
+    BUILDER.comment("General settings").push(LetThemGrowMod.MODID);
     MILKNERF = BUILDER.comment("When a cow is milked too often it becomes un-milkable for a time")
         .define("limitedMilk", true);
     SAPLINGCHANCE = BUILDER.comment("Once every tick, this is the percentage chance that growth will be blocked; so 99 is very slow, and 1 is fast.")
@@ -30,26 +30,26 @@ public class ConfigManagerMobgrowth extends ConfigTemplate {
   }
 
   public ConfigManagerMobgrowth() {
-    CONFIG.setConfig(setup(GrowthMod.MODID));
+    CONFIG.setConfig(setup(LetThemGrowMod.MODID));
   }
 
-  public int getCropsChance() {
+  public static int getCropsChance() {
     return CROPSCHANCE.get();
   }
 
-  public int getAnimalChance() {
+  public static int getAnimalChance() {
     return ANIMALCHANCE.get();
   }
 
-  public int getSaplingChance() {
+  public static int getSaplingChance() {
     return SAPLINGCHANCE.get();
   }
 
-  public boolean disableFeeding() {
+  public static boolean disableFeeding() {
     return DISABLEFEEDING.get();
   }
 
-  public boolean milkNerf() {
+  public static boolean milkNerf() {
     return MILKNERF.get();
   }
 }

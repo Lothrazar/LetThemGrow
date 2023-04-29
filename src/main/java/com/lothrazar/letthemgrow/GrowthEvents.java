@@ -17,7 +17,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class GrowthEvents {
 
-  private static final String MILKED_NBTKEY = GrowthMod.MODID + ":milked";
+  private static final String MILKED_NBTKEY = LetThemGrowMod.MODID + ":milked";
   static final int FULLGROWN = 0;
 
   @SubscribeEvent
@@ -28,7 +28,7 @@ public class GrowthEvents {
       //      Animal child = (Animal) event.getEntityLiving();
       if (child.getAge() < FULLGROWN) {
         //it has a 50% chance of not growing
-        if (world.random.nextDouble() * 100 < GrowthMod.CONFIG.getAnimalChance()) {
+        if (world.random.nextDouble() * 100 < ConfigManagerMobgrowth.getAnimalChance()) {
           child.setAge(child.getAge() - 1);
         }
       }
@@ -43,7 +43,7 @@ public class GrowthEvents {
   public void onEntity(PlayerInteractEvent.EntityInteract event) {
     //milking timer
     Player player = event.getEntity();
-    if (GrowthMod.CONFIG.milkNerf()
+    if (ConfigManagerMobgrowth.milkNerf()
         && !player.level.isClientSide
         && !player.isCreative()
         && event.getTarget() instanceof Cow
@@ -80,26 +80,24 @@ public class GrowthEvents {
    */
   @SubscribeEvent
   public void onCropGrow(BlockEvent.CropGrowEvent.Pre event) {
-    if (event.getLevel().getRandom().nextDouble() * 100 <= GrowthMod.CONFIG.getCropsChance()) {
+    if (event.getLevel().getRandom().nextDouble() * 100 <= ConfigManagerMobgrowth.getCropsChance()) {
       event.setResult(Result.DENY);
     }
   }
 
   @SubscribeEvent
   public void onSaplingGrowTreeEvent(SaplingGrowTreeEvent event) {
-    if (event.getLevel().getRandom().nextDouble() * 100 <= GrowthMod.CONFIG.getSaplingChance()) {
+    if (event.getLevel().getRandom().nextDouble() * 100 <= ConfigManagerMobgrowth.getSaplingChance()) {
       event.setResult(Result.DENY);
     }
   }
 
   @SubscribeEvent
   public void onEntityInteract(EntityInteract event) {
-    if (GrowthMod.CONFIG.disableFeeding() && event.getTarget() instanceof AgeableMob) {
-      AgeableMob growing = (AgeableMob) event.getTarget();
+    if (ConfigManagerMobgrowth.disableFeeding() && event.getTarget() instanceof AgeableMob growing) {
       if (growing.isBaby()) {
-        if (growing instanceof Animal) {
-          //one subclass down from ageable
-          Animal child = (Animal) growing;
+        if (growing instanceof Animal child) {
+          //one subclass down from ageable 
           if (child.isFood(event.getItemStack())) {
             event.setCanceled(true);
           }
