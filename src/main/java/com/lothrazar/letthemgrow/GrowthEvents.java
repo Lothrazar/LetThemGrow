@@ -22,7 +22,7 @@ public class GrowthEvents {
 
   @SubscribeEvent
   public void onLivingUpdateEvent(LivingTickEvent event) {
-    Level world = event.getEntity().level;
+    Level world = event.getEntity().level();
     if (!world.isClientSide
         && event.getEntity() instanceof Animal child) {
       //      Animal child = (Animal) event.getEntityLiving();
@@ -44,7 +44,7 @@ public class GrowthEvents {
     //milking timer
     Player player = event.getEntity();
     if (ConfigManagerMobgrowth.milkNerf()
-        && !player.level.isClientSide
+        && !player.level().isClientSide
         && !player.isCreative()
         && event.getTarget() instanceof Cow
         && event.getItemStack().getItem() == Items.BUCKET) {
@@ -56,7 +56,7 @@ public class GrowthEvents {
         //even if nbt gets wiped
         int prev = cow.getPersistentData().getInt(MILKED_NBTKEY);
         if (prev >= 6
-            && player.level.random.nextDouble() < 0.25) {
+            && player.level().random.nextDouble() < 0.25) {
           //after a few freebies, then there is a chance the bad thing happens
           cow.setAge(-24000);
           cow.getPersistentData().putInt(MILKED_NBTKEY, 0);

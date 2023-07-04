@@ -15,7 +15,7 @@ issueTrackerURL="https://github.com/Lothrazar/LetThemGrow/issues" #optional
 # The modid of the mod
 modId="letthemgrow" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="${file.jarVersion}" #mandatory
+version="${mod_version}" #mandatory
  # A display name for the mod
 displayName="Let Them Grow" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
@@ -23,7 +23,7 @@ updateJSONURL="https://raw.githubusercontent.com/Lothrazar/LetThemGrow/trunk/1.1
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://www.curseforge.com/minecraft/mc-mods/let-them-grow" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="logoFile.png" #optional
+logoFile="" #optional
 # A text field displayed in the mod UI
 credits="" #optional
 # A text field displayed in the mod UI
@@ -48,12 +48,12 @@ Slows down growth of crops and livestock; see config file
 [[dependencies.letthemgrow]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.4,)"
+    versionRange="[1.20.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.letthemgrow]]
     modId="flib"
     mandatory=true
-    versionRange="[0.0.4,)"
+    versionRange="[0.0.5,)"
     ordering="NONE"
     side="BOTH"
