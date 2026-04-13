@@ -1,19 +1,19 @@
 package com.lothrazar.letthemgrow;
 
+import com.lothrazar.library.util.ParticleUtil;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.level.SaplingGrowTreeEvent;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event.Result;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.neoforged.neoforge.event.level.BlockGrowFeatureEvent;
+import net.neoforged.neoforge.event.level.block.CropGrowEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 public class GrowthEvents {
 
@@ -21,7 +21,7 @@ public class GrowthEvents {
   static final int FULLGROWN = 0;
 
   @SubscribeEvent
-  public void onLivingUpdateEvent(LivingTickEvent event) {
+  public void onLivingUpdateEvent(EntityTickEvent.Post event) {
     Level world = event.getEntity().level();
     if (!world.isClientSide
         && event.getEntity() instanceof Animal child) {
@@ -68,27 +68,18 @@ public class GrowthEvents {
   }
 
   //swords pass thru them unharmned? 
-  /**
-   * Fired when any "growing age" blocks (for example cacti, chorus plants, or crops in vanilla) attempt to advance to the next growth age state during a random tick.<br>
-   * <br>
-   * {@link Result#DEFAULT} will pass on to the vanilla growth mechanics.<br>
-   * {@link Result#ALLOW} will force the plant to advance a growth stage.<br>
-   * {@link Result#DENY} will prevent the plant from advancing a growth stage.<br>
-   * <br>
-   * This event is not {@link Cancelable}.<br>
-   * <br>
-   */
+  // not ICancellableEvent , use new pre result enum
   @SubscribeEvent
-  public void onCropGrow(BlockEvent.CropGrowEvent.Pre event) {
+  public void onCropGrow(CropGrowEvent.Pre event) {
     if (event.getLevel().getRandom().nextDouble() * 100 <= ConfigManagerMobgrowth.getCropsChance()) {
-      event.setResult(Result.DENY);
+      event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
     }
   }
 
   @SubscribeEvent
-  public void onSaplingGrowTreeEvent(SaplingGrowTreeEvent event) {
+  public void onSaplingGrowTreeEvent(BlockGrowFeatureEvent event) {
     if (event.getLevel().getRandom().nextDouble() * 100 <= ConfigManagerMobgrowth.getSaplingChance()) {
-      event.setResult(Result.DENY);
+      event.setCanceled(true);
     }
   }
 
@@ -100,6 +91,8 @@ public class GrowthEvents {
           //one subclass down from ageable 
           if (child.isFood(event.getItemStack())) {
             event.setCanceled(true);
+            LetThemGrowMod.LOGGER.debug("Baby mob growth blocked from food");
+            ParticleUtil.doSmoke(event.getLevel(), growing.position().x(),growing.position().y(),growing.position().z());
           }
         }
       }
