@@ -1,0 +1,18 @@
+#General settings
+[letthemgrow]
+	#When a cow is milked too often it becomes un-milkable for a time
+	limitedMilk = true
+	#Once every tick, this is the percentage chance that growth will be blocked; so 99 is very slow, and 1 is fast.
+	# Default: 75
+	# Range: 0 ~ 100
+	saplingSlowdownChance = 75
+	#Once every tick, this is the percentage chance that growth will be blocked; so 99 is very slow, and 1 is fast.
+	# Default: 50
+	# Range: 0 ~ 100
+	cropsSlowdownChance = 50
+	#Once every tick, this is the percentage chance that growth will be blocked; so 99 is very slow, and 1 is fast.
+	# Default: 70
+	# Range: 0 ~ 100
+	livestockSlowdownChance = 70
+	#True to disable feeding any compatible items to child animals
+	blockFeedingYoung = true

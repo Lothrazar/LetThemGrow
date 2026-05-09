@@ -1,20 +1,19 @@
 package com.lothrazar.letthemgrow;
 
-import com.lothrazar.library.config.ConfigTemplate;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
-public class ConfigManagerMobgrowth extends ConfigTemplate {
+public class ConfigManagerMobgrowth {
 
-  private static final ForgeConfigSpec CONFIG;
+  static final ModConfigSpec CONFIG;
   private static IntValue ANIMALCHANCE;
   private static BooleanValue DISABLEFEEDING;
   private static BooleanValue MILKNERF;
   private static IntValue CROPSCHANCE;
   private static IntValue SAPLINGCHANCE;
   static {
-    final ForgeConfigSpec.Builder BUILDER = builder();
+    final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     BUILDER.comment("General settings").push(LetThemGrowMod.MODID);
     MILKNERF = BUILDER.comment("When a cow is milked too often it becomes un-milkable for a time")
         .define("limitedMilk", true);
@@ -29,9 +28,9 @@ public class ConfigManagerMobgrowth extends ConfigTemplate {
     CONFIG = BUILDER.build();
   }
 
-  public ConfigManagerMobgrowth() {
-    CONFIG.setConfig(setup(LetThemGrowMod.MODID));
-  }
+//  public ConfigManagerMobgrowth() {
+//    CONFIG.setConfig(setup(LetThemGrowMod.MODID));
+//  }
 
   public static int getCropsChance() {
     return CROPSCHANCE.get();

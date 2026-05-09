@@ -1,17 +1,15 @@
-# Let them Grow
+﻿# Let them Grow
 
-A Minecraft mod built on the Forge API [https://files.minecraftforge.net/](https://files.minecraftforge.net)
+A Minecraft mod built on the NeoForge API [https://neoforged.net/](https://neoforged.net/)
 
-Project page with releases: https://www.curseforge.com/minecraft/mc-mods/let-them-grow
+[![CurseForge](https://img.shields.io/badge/CurseForge-F16436?style=flat-square&logo=curseforge&logoColor=white)](https://www.curseforge.com/minecraft/mc-mods/let-them-grow)
+[![Modrinth](https://img.shields.io/badge/Modrinth-1bd96a?style=flat-square&logo=modrinth&logoColor=white)](https://modrinth.com/mod/let-them-grow)
 
 [![](http://cf.way2muchnoise.eu/368534.svg)](https://www.curseforge.com/minecraft/mc-mods/let-them-grow) 
 [![](http://cf.way2muchnoise.eu/versions/368534.svg)](https://www.curseforge.com/minecraft/mc-mods/let-them-grow)
 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Twitter Badge](https://img.shields.io/badge/contact-twitter-blue.svg)](https://twitter.com/lothrazar)
-[![Discord](https://img.shields.io/discord/749302798797242449.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/uWZ3jf56fV)
 [![links](https://img.shields.io/badge/more-links-ff69b4.svg)](https://allmylinks.com/lothrazar)
 [![Support](https://img.shields.io/badge/Patreon-Support-orange.svg?logo=Patreon)](https://www.patreon.com/Lothrazar)
-
 
