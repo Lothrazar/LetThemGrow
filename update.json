@@ -1,9 +1,9 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/let-them-grow",
   "promos": {
-    "1.21.1-latest": "1.0.1"
+    "1.21.1-latest": "1.1.0"
   },
   "1.21.1": {
-    "1.0.1": "Ported  "
+    "1.1.0": "Ported to 1.21.1.  By default, all crop growth and milk features are disabled and left as vanilla settings.  Only the Baby Animals limited growth setting is enabled by default.  All can be configured as normal.  Config file renamed to standardized letthemgrow-common.toml   "
   }
 }
