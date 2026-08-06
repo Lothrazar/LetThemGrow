@@ -3,7 +3,7 @@ package com.lothrazar.letthemgrow;
 import com.lothrazar.library.util.ParticleUtil;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -23,12 +23,12 @@ public class GrowthEvents {
   @SubscribeEvent
   public void onLivingUpdateEvent(EntityTickEvent.Post event) {
     Level world = event.getEntity().level();
-    if (!world.isClientSide
+    if (!world.isClientSide()
         && event.getEntity() instanceof Animal child) {
       //      Animal child = (Animal) event.getEntityLiving();
       if (child.getAge() < FULLGROWN) {
         //it has a 50% chance of not growing
-        if (world.random.nextDouble() * 100 < ConfigManagerMobgrowth.getAnimalChance()) {
+        if (world.getRandom().nextDouble() * 100 < ConfigManagerMobgrowth.getAnimalChance()) {
           child.setAge(child.getAge() - 1);
         }
       }
@@ -44,7 +44,7 @@ public class GrowthEvents {
     //milking timer
     Player player = event.getEntity();
     if (ConfigManagerMobgrowth.milkNerf()
-        && !player.level().isClientSide
+        && !player.level().isClientSide()
         && !player.isCreative()
         && event.getTarget() instanceof Cow
         && event.getItemStack().getItem() == Items.BUCKET) {
@@ -54,9 +54,9 @@ public class GrowthEvents {
         //is crazy and makes no sense but makes it un-milkeable
         //non random is better,can we keep track of minimum 
         //even if nbt gets wiped
-        int prev = cow.getPersistentData().getInt(MILKED_NBTKEY);
+        int prev = cow.getPersistentData().getIntOr(MILKED_NBTKEY, 0);
         if (prev >= 6
-            && player.level().random.nextDouble() < 0.25) {
+            && player.level().getRandom().nextDouble() < 0.25) {
           //after a few freebies, then there is a chance the bad thing happens
           cow.setAge(-24000);
           cow.getPersistentData().putInt(MILKED_NBTKEY, 0);
